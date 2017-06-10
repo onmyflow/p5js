@@ -1,62 +1,51 @@
-var n
-var lab;
-var lr = 1
-var randX
-var randY
-var pointArray = []
-var inputs = []
+input = new Array(2)
+var p1
+var solution = []
+var lr = 0.01
+
+
 function setup(){
-  translate(width/2, height/2)
-  createCanvas(400,400)
-  background(51)
-  n = new neuron()
-  for(i=0; i< 5200; i++){
-    randX = random(width)
-    randY = random(height)
-    lab = 1
-    if(randY > f(randX)){
-      lab = -1
-    }
-    n.train(randX, randY, lab)
-    var res = n.guess(randX, randY)
-    console.log(res)
-    pointArray.push(new createPoint(randX, randY, res))
-  }
-}
-
-
-function draw(){
+  translate(200,200)
+  createCanvas(500,500)
   background(51)
   stroke(255)
-  for(i = 0; i < pointArray.length; i++){
-    pointArray[i].show()
+  strokeWeight(1)
+for(i=0;i < 100000; i++){
+  var xsol = random(width)
+  var ysol = random(height)
+  var out = -1
+  if(ysol > f(xsol)){
+    out = 1
   }
+  solution[i] = {
+    x:xsol,
+    y:ysol,
+    output: out
+  }
+}
+  p1 = new Perceptron(200)
+  for(i = 0; i < solution.length; i++){
+    p1.train(solution[i].x, solution[i].y,  solution[i].output)
+  }
+  console.log(p1.errTotal)
+  for(i = 0; i < solution.length; i++){
+    if(p1.guess(solution[i].x,solution[i].y) == 1){
+        fill(0,255,0)
+      } else if(p1.guess(solution[i].x,solution[i].y,) == -1){
+        fill(255,0,0)
+      }
+    ellipse(solution[i].x,solution[i].y,10,10)
+  }
+  console.log(p1.w1, p1.w2, p1.biasWeight)
+  line(0,f(0),width,f(width))
+}
+function draw(){
+  
+}
+function mousePressed(){
 
 }
 
-function neuron(){
-  this.weightX = random(-1,1)
-  this.weightY = random(-1,1)
-
-  this.guessResult = -1
-
-  this.guess = function(x, y){
-
-    this.ans = this.weightX * x + this.weightY * y
-    console.log(this.weightX, this.weightY)
-    this.guessResult = sign(this.ans)
-    return(this.guessResult)
-
-  }
-
-  this.train = function(x, y, label){
-    this.error = label - this.guessResult
-    this.weightX += this.error * x * lr
-    this.weightY += this.error * y * lr
-
-
-  }
-}
 function f(x){
-  return(1*x+0)
+  return 0.2*x+200
 }
