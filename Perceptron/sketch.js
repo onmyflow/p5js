@@ -1,62 +1,62 @@
 var n
-var lr = 0.5
+var lab;
+var lr = 1
+var randX
+var randY
 var pointArray = []
+var inputs = []
 function setup(){
-  //frameRate(30)
+  translate(width/2, height/2)
   createCanvas(400,400)
   background(51)
-
-n = new neuron()
+  n = new neuron()
+  for(i=0; i< 5200; i++){
+    randX = random(width)
+    randY = random(height)
+    lab = 1
+    if(randY > f(randX)){
+      lab = -1
+    }
+    n.train(randX, randY, lab)
+    var res = n.guess(randX, randY)
+    console.log(res)
+    pointArray.push(new createPoint(randX, randY, res))
+  }
 }
+
+
 function draw(){
   background(51)
   stroke(255)
-  line(width/2 ,0, width/2 , height)
   for(i = 0; i < pointArray.length; i++){
     pointArray[i].show()
   }
 
-
-  var lab;
-  var randX =  random(width)
-  var randY = random(height)
-  if(randY < 200 && randX < 200){
-    lab = 1
-  } else {
-    lab = -1
-  }
-  //console.log("mouselable:" + lab)
-  var zero = n.train(randX, randY, lab)
-  var res = n.guess(randX, randY)
-  console.log(res)
-  if(zero == "null"){
-    // console.log("noDraw")
-    return("noDraw")
-
-  }
-   pointArray.push(new createPoint(randX, randY, res))
 }
 
 function neuron(){
   this.weightX = random(-1,1)
   this.weightY = random(-1,1)
-  this.guessResult = 0
+
+  this.guessResult = -1
 
   this.guess = function(x, y){
+
     this.ans = this.weightX * x + this.weightY * y
+    console.log(this.weightX, this.weightY)
     this.guessResult = sign(this.ans)
-    //console.log("weights"+ this.weightX + " // " + this.weightY)
     return(this.guessResult)
 
   }
 
   this.train = function(x, y, label){
-    // console.log("guessed:" + this.guess)
-    var error = (label - this.guessResult) * 2
-      this.weightX = this.weightX + error * x * lr
-      this.weightY = this.weightY + error * y * lr
-    //console.log(error)
+    this.error = label - this.guessResult
+    this.weightX += this.error * x * lr
+    this.weightY += this.error * y * lr
 
-    // console.log(this.weightX, this.weightY, this.guess)
+
   }
+}
+function f(x){
+  return(1*x+0)
 }
