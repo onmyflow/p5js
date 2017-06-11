@@ -1,4 +1,4 @@
-function Perceptron(bias = 1, lr = 0.1, count = 2){
+function Perceptron(bias = 1, lr = 0.01, count = 2){
   this.errTotal = 0
   this.weights = []
   this.biasWeight = random(-1,1)

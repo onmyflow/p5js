@@ -1,7 +1,7 @@
 input = new Array(2)
 var p1
 var solution = []
-var lr = 0.01
+var lr = 0.0001
 
 
 function setup(){
@@ -23,7 +23,7 @@ function setup(){
 //     output: out
 //   }
 // }
-  p1 = new Perceptron(width, lr, 2)
+  p1 = new Perceptron(9210, lr, 2)
   // for(i = 0; i < solution.length; i++){
   //
   // }
@@ -38,14 +38,14 @@ function draw(){
 var randomX = random(width)
 var randomY = random(height)
 var out
-if(randomY >= f(randomX)){
+if(randomX > 200 && randomX < 300 && randomY > 200 && randomY < 300){
   out = 1
 } else {
   out = -1
 }
 
   p1.train([randomX, randomY],  out)
-  if(p1.guess([randomX, randomY]) == 1){
+  if(p1.guess([randomX, randomY]) > 0){
       fill(0,255,0)
     } else {
       fill(255,0,0)
@@ -53,11 +53,12 @@ if(randomY >= f(randomX)){
   var xMap = randomX
   var yMap = map(randomY,0,height,height,0)
   ellipse(xMap, yMap,10,10)
+  //console.log(p1.weights)
 }
 function mousePressed(){
-
+  console.log(p1.guess(mouseX, mouseY))
 }
 
 function f(x){
-  return 0.3*x+300
+  return 0
 }
