@@ -4,7 +4,7 @@ var Trainer = []
 function setup(){
   createCanvas(400,400)
   background(51)
-  neuron = new Perceptron(1,0.01,3)
+  neuron = new Perceptron(1,0.001,3)
  for(i = 0; i < 200000; i++){
    var flag = -1
    var x = map(random(width), 0, width, 0, 1)
@@ -48,5 +48,5 @@ function f(x){
   return 1 * x + 0.5
 }
 function g(x){
-  return 0 * x + 200
+  return 1 * x + 200
 }
